@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono" rel="stylesheet">
+    <title>Django Rest Framework</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .title-heading {
+            margin: 50px auto;
+        }
+
+        /* Step number styles */
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #333;
+            color: #FFF;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Terminal Styles */
+        .terminal {
+            display: block;
+            width: 600px;
+            border-radius: 5px;
+            box-shadow: 0px 10px 45px rgba(0, 0, 0, 0.3);
+            background-color: #272822;
+            color: #f8f8f2;
+            margin: 20px auto;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .terminal__head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #e2e2e2;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .terminal__controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        .terminal__title {
+            flex-grow: 1;
+        }
+
+        .terminal__title-text {
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .terminal__body {
+            padding: 20px;
+        }
+
+        .terminal__code {
+            background-color: #272822;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.4;
+            overflow-x: auto;
+        }
+
+        .terminal__command--input::before {
+            content: "$ ";
+            color: #7fdbca;
+        }
+
+        .terminal__command--output::before {
+            content: "$ ";
+            color: #ff6d00;
+        }
+
+        .terminal__command--input:last-child::after {
+            content: "\25A0";
+            font-size: 14px;
+            vertical-align: middle;
+            animation: 1.2s fade infinite;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Guide Steps Styles */
+        .step {
+            margin-bottom: 50px;
+        }
+
+        .step-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .step-description {
+            font-size: 16px;
+        }
+
+        :root {
+            --bg-color: #1e272e;
+            --header-color: #e2e2e2;
+            --close-btn-color: #ff6059;
+            --minimise-btn-color: #ffbd2e;
+            --maximise-btn-color: #29ca42;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+            /* background-color: var(--bg-color); */
+        }
+
+        ::selection {
+            background-color: #fff;
+            color: #111;
+        }
+
+        .terminal {
+            display: block;
+            width: 600px;
+            /* border-radius: 0.27 rem; */
+            box-shadow: 0px 10px 45px rgba(0, 0, 0, 0.3);
+            /* min-height: 200px; */
+            /* font-family: monospace; */
+        }
+
+        .terminal__head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            background-color: var(--header-color);
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .terminal__controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        .terminal__title {
+            flex-grow: 1;
+        }
+
+        .terminal__title .terminal__title-text {
+            text-align: center;
+            font-size: 14px;
+            color: #111;
+        }
+
+        .terminal__head .terminal__button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .terminal__button--close {
+            margin-left: 10px;
+            background-color: var(--close-btn-color);
+        }
+
+        .terminal__button--minimise {
+            background-color: var(--minimise-btn-color);
+        }
+
+        .terminal__button--maximise {
+            background-color: var(--maximise-btn-color);
+        }
+
+        .terminal__body {
+            padding: 0 10px;
+        }
+
+        .terminal__code {
+            text-align: center;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .terminal__code-language {
+            display: block;
+            color: #fff;
+            line-height: 2rem;
+            text-align: left;
+        }
+
+        .terminal__commands-list {
+            list-style: none;
+        }
+
+        .terminal__commands-list .terminal__command--input:last-child::after {
+            content: "\25A0";
+            /* Unicode code point for a block symbol */
+            font-size: 14px;
+            vertical-align: middle;
+            animation: 1.2s fade infinite;
+        }
+
+        .copy-btn {
+            cursor: pointer;
+            background-color: #333;
+            border: none;
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 14px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: #555;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1 class="title-heading">Step-by-Step Guide: Django Rest Framework</h1>
+    </div>
+
+    <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-header">Step 1: Check Python and Pip Installation</div>
+        <div class="step-description">
+            <p>First, make sure you have Python and Pip installed on your system.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">python --version</li>
+                <li class="terminal__command terminal__command--input">pip --version</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">python3 --version</li>
+                <li class="terminal__command terminal__command--input">pip3 --version</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-header">Step 2: Install Django, Psycopg2, and Django Rest Framework</div>
+        <div class="step-description">
+            <p>Install the required Python packages for your Django Rest Framework app.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">pip install django</li>
+                <li class="terminal__command terminal__command--input">pip install psycopg2</li>
+                <li class="terminal__command terminal__command--input">pip install djangorestframework</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">pip3 install django</li>
+                <li class="terminal__command terminal__command--input">pip3 install psycopg2</li>
+                <li class="terminal__command terminal__command--input">pip3 install djangorestframework</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-header">Step 3: Create a PostgreSQL Database</div>
+        <div class="step-description">
+            <p>Create a PostgreSQL database for your Django project.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text">psql</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">CREATE DATABASE my_database_name;</li>
+              </ul>            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-header">Step 4: Change to Your Desired Directory</div>
+        <div class="step-description">
+            <p>Open a terminal or command prompt and change to your desired directory.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text">Terminal</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">cd /path/to/your/directory</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-header">Step 5: Start a New Django Project</div>
+        <div class="step-description">
+            <p>Create a new Django project with your desired project name.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">django-admin startproject my_project</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">django-admin startproject my_project</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Step 6: Run the Django Development Server -->
+    <div class="step">
+        <div class="step-number">6</div>
+        <div class="step-header">Step 6: Run the Django Development Server</div>
+        <div class="step-description">
+            <p>Start the Django development server to test your project.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">cd my_project</li>
+                <li class="terminal__command terminal__command--input">python manage.py runserver</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">cd my_project</li>
+                <li class="terminal__command terminal__command--input">python3 manage.py runserver</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Step 7: Start a New Django App -->
+    <div class="step">
+        <div class="step-number">7</div>
+        <div class="step-header">Step 7: Start a New Django App</div>
+        <div class="step-description">
+            <p>In a new terminal</p>
+            <p>Open the project in VS Code</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text">Terminal</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">code .</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="step-description">
+            <p>Create a new Django app inside your project.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">python manage.py startapp my_app</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">python3 manage.py startapp my_app</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 8: Add Installed Apps in settings.py -->
+    <div class="step">
+        <div class="step-number">8</div>
+        <div class="step-header">Step 8: Add Installed Apps in settings.py</div>
+        <div class="step-description">
+            <p>In my_project/settings.py file, add the newly created app and the 'rest_framework' app
+                to</p>
+            <p>the <strong>'INSTALLED_APPS'</strong> list.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text">VS Code</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">    'my_app',</li>
+                <li class="terminal__command terminal__command--input">    'rest_framework',</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+
+
+            </div>
+            <p>Your INSTALLED_APPS should looks similar as this: </p>
+            <div class="terminal">
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">INSTALLED_APPS = [</li>
+                <li class="terminal__command terminal__command--input">&nbsp; 'django.contrib.admin',</li>
+                <li class="terminal__command terminal__command--input">&nbsp; 'django.contrib.auth',</li>
+                <li class="terminal__command terminal__command--input">&nbsp; 'django.contrib.contenttypes',</li>
+                <li class="terminal__command terminal__command--input">&nbsp; 'django.contrib.sessions',</li>
+                <li class="terminal__command terminal__command--input">&nbsp; 'django.contrib.messages',</li>
+                <li class="terminal__command terminal__command--input">&nbsp; 'django.contrib.staticfiles',</li>
+                <li class="terminal__command terminal__command--input">&nbsp; 'my_app',</li>
+                <li class="terminal__command terminal__command--input">&nbsp; 'rest_framework',</li>
+                <li class="terminal__command terminal__command--input">]</li>
+              </ul>
+            </code>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Step 9: Add Database Configuration in settings.py -->
+    <div class="step">
+        <div class="step-number">9</div>
+        <div class="step-header">Step 9: Add Database Configuration in settings.py</div>
+        <div class="step-description">
+            <p>Configure the database settings in the settings.py file to connect Django to your local PostgreSQL
+                database.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text">VS Code</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">DATABASES = {</li>
+                <li class="terminal__command terminal__command--input">    'default': {</li>
+                <li class="terminal__command terminal__command--input">        'ENGINE': 'django.db.backends.postgresql',</li>
+                <li class="terminal__command terminal__command--input">        'NAME': 'cheesedb',</li>
+                <li class="terminal__command terminal__command--input">        'USER':'postgres',</li>
+                <li class="terminal__command terminal__command--input">        'PASSWORD':'my_password',</li>
+                <li class="terminal__command terminal__command--input">    }</li>
+                <li class="terminal__command terminal__command--input">}</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Step 10: Create the Book Model -->
+    <div class="step">
+        <div class="step-number">10</div>
+        <div class="step-header">Step 10: Create the Book Model</div>
+        <div class="step-description">
+            <p>Create the Book model in the models.py file of the app.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">notepad my_app/models.py</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">nano my_app/models.py</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Add the remaining steps here -->
+
+    <!-- Step 11: Make Migrations and Apply Changes to the Database -->
+    <div class="step">
+        <div class="step-number">11</div>
+        <div class="step-header">Step 11: Make Migrations and Apply Changes to the Database</div>
+        <div class="step-description">
+            <p>Create and apply migrations to sync the database schema with the Django models.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">python manage.py makemigrations</li>
+                <li class="terminal__command terminal__command--input">python manage.py migrate</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">python3 manage.py makemigrations</li>
+                <li class="terminal__command terminal__command--input">python3 manage.py migrate</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Step 12: Register the Book Model in the Admin Panel -->
+    <div class="step">
+        <div class="step-number">12</div>
+        <div class="step-header">Step 12: Register the Book Model in the Admin Panel</div>
+        <div class="step-description">
+            <p>Register the Book model in the admin.py file of the app.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">notepad my_app/admin.py</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">nano my_app/admin.py</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 13: Run the Development Server -->
+    <div class="step">
+        <div class="step-number">13</div>
+        <div class="step-header">Step 13: Run the Development Server</div>
+        <div class="step-description">
+            <p>Start the Django development server to test your project with the newly added Book model and admin
+                panel
+                configuration.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">python manage.py runserver</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">python3 manage.py runserver</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Step 14: Create Serializer for the Book Model -->
+    <div class="step">
+        <div class="step-number">14</div>
+        <div class="step-header">Step 14: Create Serializer for the Book Model</div>
+        <div class="step-description">
+            <p>Create a serializer for the Book model in a new file called serializer.py inside the my_app folder.
+            </p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">notepad my_app/serializer.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">nano my_app/serializer.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Step 15: Create List and Create API Views -->
+    <div class="step">
+        <div class="step-number">15</div>
+        <div class="step-header">Step 15: Create List and Create API Views</div>
+        <div class="step-description">
+            <p>Create API views for listing and creating books in the views.py file of the app.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">notepad my_app/views.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">nano my_app/views.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Step 16: Create urls.py File -->
+    <div class="step">
+        <div class="step-number">16</div>
+        <div class="step-header">Step 16: Create urls.py File</div>
+        <div class="step-description">
+            <p>Create a urls.py file inside the my_app folder to define the URLs for the API views.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">notepad my_app/urls.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">nano my_app/urls.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Step 17: Include App URLs in Project URLs -->
+    <div class="step">
+        <div class="step-number">17</div>
+        <div class="step-header">Step 17: Include App URLs in Project URLs</div>
+        <div class="step-description">
+            <p>Add the URLs of the my_app app to the my_project/urls.py file to include them in the project URLs.
+            </p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">notepad my_project/urls.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">nano my_project/urls.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Step 18: Test the API in the Browser -->
+    <div class="step">
+        <div class="step-number">18</div>
+        <div class="step-header">Step 18: Test the API in the Browser</div>
+        <div class="step-description">
+            <p>Open your web browser and navigate to the URL for the API view to test it.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">http://localhost:8000/books/</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">http://localhost:8000/books/</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Step 19: Implement Retrieve, Update, and Delete API Views -->
+    <div class="step">
+        <div class="step-number">19</div>
+        <div class="step-header">Step 19: Implement Retrieve, Update, and Delete API Views</div>
+        <div class="step-description">
+            <p>Add API views for retrieving, updating, and deleting book instances in the views.py file of the app.
+            </p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">notepad my_app/views.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">nano my_app/views.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Step 20: Add URLs for Retrieve, Update, and Delete API Views -->
+    <div class="step">
+        <div class="step-number">20</div>
+        <div class="step-header">Step 20: Add URLs for Retrieve, Update, and Delete API Views</div>
+        <div class="step-description">
+            <p>Define the URLs for the retrieve, update, and delete API views in the urls.py file of the app.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">notepad my_app/urls.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">nano my_app/urls.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Step 21: Test the Retrieve, Update, and Delete API Views -->
+    <div class="step">
+        <div class="step-number">21</div>
+        <div class="step-header">Step 21: Test the Retrieve, Update, and Delete API Views</div>
+        <div class="step-description">
+            <p>Open your web browser and navigate to the URLs for the retrieve, update, and delete API views to test
+                them.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">http://localhost:8000/books/&lt;book_id&gt;/</li>
+                            <li class="terminal__command terminal__command--input">http://localhost:8000/books/&lt;book_id&gt;/update/</li>
+                            <li class="terminal__command terminal__command--input">http://localhost:8000/books/&lt;book_id&gt;/delete/</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">http://localhost:8000/books/&lt;book_id&gt;/</li>
+                            <li class="terminal__command terminal__command--input">http://localhost:8000/books/&lt;book_id&gt;/update/</li>
+                            <li class="terminal__command terminal__command--input">http://localhost:8000/books/&lt;book_id&gt;/delete/</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Step 22: Define Models for Publisher and Author -->
+    <div class="step">
+        <div class="step-number">22</div>
+        <div class="step-header">Step 22: Define Models for Publisher and Author</div>
+        <div class="step-description">
+            <p>Add models for the Publisher and Author with appropriate fields and relationships in the models.py
+                file
+                of the app.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">notepad my_app/models.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">nano my_app/models.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Step 23: Make Migrations for Publisher and Author Models -->
+    <div class="step">
+        <div class="step-number">23</div>
+        <div class="step-header">Step 23: Make Migrations for Publisher and Author Models</div>
+        <div class="step-description">
+            <p>Create and apply migrations for the new models to update the database schema.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">python manage.py makemigrations</li>
+                            <li class="terminal__command terminal__command--input">python manage.py migrate</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">python manage.py makemigrations</li>
+                            <li class="terminal__command terminal__command--input">python manage.py migrate</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Step 24: Register Publisher and Author Models in admin.py -->
+    <div class="step">
+        <div class="step-number">24</div>
+        <div class="step-header">Step 24: Register Publisher and Author Models in admin.py</div>
+        <div class="step-description">
+            <p>Open the admin.py file of the app and register the Publisher and Author models to make them
+                accessible in
+                the Django admin panel.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">notepad my_app/admin.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">nano my_app/admin.py</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Step 25: Create a Superuser -->
+    <div class="step">
+        <div class="step-number">25</div>
+        <div class="step-header">Step 25: Create a Superuser</div>
+        <div class="step-description">
+            <p>Create a superuser account to access the Django admin panel.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">python manage.py createsuperuser</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">python manage.py createsuperuser</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Step 26: Log in to the Admin Panel -->
+    <div class="step">
+        <div class="step-number">26</div>
+        <div class="step-header">Step 26: Log in to the Admin Panel</div>
+        <div class="step-description">
+            <p>Open your web browser and navigate to the admin panel URL (http://localhost:8000/admin/). Log in with
+                the
+                superuser credentials you created in the previous step.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">start http://localhost:8000/admin/</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">open http://localhost:8000/admin/</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Step 27: Verify the Relationships in the Admin Panel -->
+    <div class="step">
+        <div class="step-number">27</div>
+        <div class="step-header">Step 27: Verify the Relationships in the Admin Panel</div>
+        <div class="step-description">
+            <p>In the Django admin panel, navigate to the Book model and verify that the relationships with
+                Publisher
+                and Author are set up correctly. Add a new book entry with associated publisher and author to test
+                the
+                relationship functionality.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">start http://localhost:8000/admin/</li>
+                            <li class="terminal__command terminal__command--input">Navigate to Books model</li>
+                            <li class="terminal__command terminal__command--input">Add a new book entry with associated publisher and author</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">open http://localhost:8000/admin/</li>
+                            <li class="terminal__command terminal__command--input">Navigate to Books model</li>
+                            <li class="terminal__command terminal__command--input">Add a new book entry with associated publisher and author</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Step 28: Test the Relationships in Views and Templates -->
+    <div class="step">
+        <div class="step-number">28</div>
+        <div class="step-header">Step 28: Test the Relationships in Views and Templates</div>
+        <div class="step-description">
+            <p>Update the views and templates of your app to display the related publisher and author information
+                for
+                each book. Test the functionality by accessing the corresponding pages and verifying the displayed
+                information.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">notepad my_app/views.py</li>
+                            <li class="terminal__command terminal__command--input">notepad my_app/templates/my_app/book_detail.html</li>
+                            <li class="terminal__command terminal__command--input">python manage.py runserver</li>
+                            <li class="terminal__command terminal__command--input">Access the book detail page and verify the displayed information</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">nano my_app/views.py</li>
+                            <li class="terminal__command terminal__command--input">nano my_app/templates/my_app/book_detail.html</li>
+                            <li class="terminal__command terminal__command--input">python manage.py runserver</li>
+                            <li class="terminal__command terminal__command--input">Access the book detail page and verify the displayed information</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Step 29: Test the Relationships in the Django Shell -->
+    <div class="step">
+        <div class="step-number">29</div>
+        <div class="step-header">Step 29: Test the Relationships in the Django Shell</div>
+        <div class="step-description">
+            <p>Open the Django shell and test the relationships by retrieving book objects and accessing their
+                related
+                publisher and author attributes.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">python manage.py shell</li>
+                            <li class="terminal__command terminal__command--input">...</li>
+                            <li class="terminal__command terminal__command--input">>>> from my_app.models import Book</li>
+                            <li class="terminal__command terminal__command--input">>>> book = Book.objects.get(id=1)</li>
+                            <li class="terminal__command terminal__command--input">>>> book.publisher</li>
+                            <li class="terminal__command terminal__command--input">>>> book.author</li>
+                            <li class="terminal__command terminal__command--input">...</li>
+                            <li class="terminal__command terminal__command--input">>>> exit()</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">python manage.py shell</li>
+                            <li class="terminal__command terminal__command--input">...</li>
+                            <li class="terminal__command terminal__command--input">>>> from my_app.models import Book</li>
+                            <li class="terminal__command terminal__command--input">>>> book = Book.objects.get(id=1)</li>
+                            <li class="terminal__command terminal__command--input">>>> book.publisher</li>
+                            <li class="terminal__command terminal__command--input">>>> book.author</li>
+                            <li class="terminal__command terminal__command--input">...</li>
+                            <li class="terminal__command terminal__command--input">>>> exit()</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Step 30: Test the API Endpoints -->
+    <div class="step">
+        <div class="step-number">30</div>
+        <div class="step-header">Step 30: Test the API Endpoints</div>
+        <div class="step-description">
+            <p>Test the API endpoints using tools like cURL or Postman to ensure that the CRUD operations are
+                working correctly.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">start http://localhost:8000/api/books/</li>
+                            <li class="terminal__command terminal__command--input">Use cURL or Postman to test the CRUD operations</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+                        <ul class="terminal__commands-list">
+                            <li class="terminal__command terminal__command--input">open http://localhost:8000/api/books/</li>
+                            <li class="terminal__command terminal__command--input">Use cURL or Postman to test the CRUD operations</li>
+                        </ul>
+                    </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Copy code snippet to clipboard
+        const copyBtns = document.querySelectorAll('.copy-btn');
+        copyBtns.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const codeSnippet = btn.parentNode.querySelector('code');
+                navigator.clipboard.writeText(codeSnippet.innerText)
+                    .then(() => {
+                        btn.innerText = 'Copied!';
+                        setTimeout(() => {
+                            btn.innerText = 'Copy';
+                        }, 2000);
+                    })
+                    .catch((error) => {
+                        console.error('Failed to copy:', error);
+                    });
+            });
+        });
+    </script>
+</body>
+
+</html>
