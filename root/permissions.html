@@ -24,9 +24,60 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f3f3f3;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        nav {
+            background-color: #444;
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin: 0 10px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        main {
+            padding: 2rem;
+            flex-grow: 1;
             display: grid;
             place-items: center;
-            min-height: 100vh;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            flex-grow: 0;
         }
 
         h1 {
@@ -215,54 +266,65 @@
 </head>
 
 <body>
-    <div>
-        <h1 class="title-heading">Step-by-Step Guide: Django Permissions</h1>
-    </div>
-    <!-- Step 1: Database clean up -->
-    <div class="step">
-        <div class="step-number">1</div>
-        <div class="step-header">Step 1: Database / Migrations Clean Up</div>
-        <div class="step-description">
-            <p>First lets clean up my_database_name</p>
-            <strong>Stop the server first</strong>
-            <div class="terminal">
-                <div class="terminal__head">
-                    <div class="terminal__controls">
-                        <div class="terminal__button terminal__button--close"></div>
-                        <div class="terminal__button terminal__button--minimise"></div>
-                        <div class="terminal__button terminal__button--maximise"></div>
+    <header>
+        <h1>Step-by-Step Guide: Django Permissions</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="./main.html">Django start project</a></li>
+            <li><a href="./relationship.html">Django relationship</a></li>
+            <li><a href="./authentication.html">Django authentication</a></li>
+            <li><a href="./permissions.html">Django permissions</a></li>
+        </ul>
+    </nav>
+    <main>
+        <!-- Step 1: Database clean up -->
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-header">Step 1: Database / Migrations Clean Up</div>
+            <div class="step-description">
+                <p>First lets clean up my_database_name</p>
+                <strong>Stop the server first</strong>
+                <div class="terminal">
+                    <div class="terminal__head">
+                        <div class="terminal__controls">
+                            <div class="terminal__button terminal__button--close"></div>
+                            <div class="terminal__button terminal__button--minimise"></div>
+                            <div class="terminal__button terminal__button--maximise"></div>
+                        </div>
+                        <div class="terminal__title">
+                            <h1 class="terminal__title-text">SQL</h1>
+                        </div>
                     </div>
-                    <div class="terminal__title">
-                        <h1 class="terminal__title-text">SQL</h1>
-                    </div>
-                </div>
-                <div class="terminal__body">
-                    <div class="terminal__code">
-                        <code class="terminal__code-language">
+                    <div class="terminal__body">
+                        <div class="terminal__code">
+                            <code class="terminal__code-language">
               <ul class="terminal__commands-list">
                 <li class="terminal__command terminal__command--input">Drop DATABASE my_database_name;CREATE DATABASE my_database_name;</li>
               </ul>
             </code>
-                        <button class="copy-btn">Copy</button>
+                            <button class="copy-btn">Copy</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <p>Next delete migration files. Only files with 000x_model.py <strong>Do not delete __pycache__ or
-                    __init__.py</strong></p>
-            <div class="terminal">
-                <div class="terminal__head">
-                    <div class="terminal__controls">
-                        <div class="terminal__button terminal__button--close"></div>
-                        <div class="terminal__button terminal__button--minimise"></div>
-                        <div class="terminal__button terminal__button--maximise"></div>
+                <p>Next delete migration files. Only files with 000x_model.py <strong>Do not delete __pycache__ or
+                        __init__.py</strong></p>
+                <div class="terminal">
+                    <div class="terminal__head">
+                        <div class="terminal__controls">
+                            <div class="terminal__button terminal__button--close"></div>
+                            <div class="terminal__button terminal__button--minimise"></div>
+                            <div class="terminal__button terminal__button--maximise"></div>
+                        </div>
+                        <div class="terminal__title">
+                            <h1 class="terminal__title-text">explorer</h1>
+                        </div>
                     </div>
-                    <div class="terminal__title">
-                        <h1 class="terminal__title-text">explorer</h1>
-                    </div>
-                </div>
-                <div class="terminal__body">
-                    <div class="terminal__code">
-                        <code class="terminal__code-language">
+                    <div class="terminal__body">
+                        <div class="terminal__code">
+                            <code class="terminal__code-language">
               <ul class="terminal__commands-list">
                 <li class="terminal__command terminal__command--output">my_app</li>
                 <li class="terminal__command terminal__command--output">├── migrations</li>
@@ -274,33 +336,33 @@
                 <li class="terminal__command terminal__command--output">│ &nbsp;  └── 0004_publisher.py</li>
               </ul>
             </code>
+                        </div>
                     </div>
                 </div>
+
             </div>
-
         </div>
-    </div>
 
-    <!-- Step 2: Add to User in token_auth/models -->
-    <div class="step">
-        <div class="step-number">2</div>
-        <div class="step-header">Step 2: Add User model in token_auth/models</div>
-        <div class="step-description">
-            <p>Open token_auth/models.py and create User model</p>
-            <div class="terminal">
-                <div class="terminal__head">
-                    <div class="terminal__controls">
-                        <div class="terminal__button terminal__button--close"></div>
-                        <div class="terminal__button terminal__button--minimise"></div>
-                        <div class="terminal__button terminal__button--maximise"></div>
+        <!-- Step 2: Add to User in token_auth/models -->
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-header">Step 2: Add User model in token_auth/models</div>
+            <div class="step-description">
+                <p>Open token_auth/models.py and create User model</p>
+                <div class="terminal">
+                    <div class="terminal__head">
+                        <div class="terminal__controls">
+                            <div class="terminal__button terminal__button--close"></div>
+                            <div class="terminal__button terminal__button--minimise"></div>
+                            <div class="terminal__button terminal__button--maximise"></div>
+                        </div>
+                        <div class="terminal__title">
+                            <h1 class="terminal__title-text">token_auth/models.py</h1>
+                        </div>
                     </div>
-                    <div class="terminal__title">
-                        <h1 class="terminal__title-text">token_auth/models.py</h1>
-                    </div>
-                </div>
-                <div class="terminal__body">
-                    <div class="terminal__code">
-                        <code class="terminal__code-language">
+                    <div class="terminal__body">
+                        <div class="terminal__code">
+                            <code class="terminal__code-language">
               <ul class="terminal__commands-list">
                 <li class="terminal__command terminal__command--output">from django.db import models</li>
                 <li class="terminal__command terminal__command--output">from django.contrib.auth.models import AbstractUser</li>
@@ -308,128 +370,128 @@
                 <li class="terminal__command terminal__command--output">class User(AbstractUser):</li>
                 <li class="terminal__command terminal__command--output">&nbsp;&nbsp;&nbsp;&nbsp;address = models.CharField(max_length=200)</li>
               </ul>            </code>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Step 3: settings.py -->
-    <div class="step">
-        <div class="step-number">3</div>
-        <div class="step-header">Step 3: Configure Auth User in Settings.py</div>
-        <div class="step-description">
-            <p>In my_project/settings.py add the below commands</p>
-            <div class="terminal">
-                <div class="terminal__head">
-                    <div class="terminal__controls">
-                        <div class="terminal__button terminal__button--close"></div>
-                        <div class="terminal__button terminal__button--minimise"></div>
-                        <div class="terminal__button terminal__button--maximise"></div>
+        <!-- Step 3: settings.py -->
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-header">Step 3: Configure Auth User in Settings.py</div>
+            <div class="step-description">
+                <p>In my_project/settings.py add the below commands</p>
+                <div class="terminal">
+                    <div class="terminal__head">
+                        <div class="terminal__controls">
+                            <div class="terminal__button terminal__button--close"></div>
+                            <div class="terminal__button terminal__button--minimise"></div>
+                            <div class="terminal__button terminal__button--maximise"></div>
+                        </div>
+                        <div class="terminal__title">
+                            <h1 class="terminal__title-text">settings.py</h1>
+                        </div>
                     </div>
-                    <div class="terminal__title">
-                        <h1 class="terminal__title-text">settings.py</h1>
-                    </div>
-                </div>
-                <div class="terminal__body">
-                    <div class="terminal__code">
-                        <code class="terminal__code-language">
+                    <div class="terminal__body">
+                        <div class="terminal__code">
+                            <code class="terminal__code-language">
               <ul class="terminal__commands-list">
                 <li class="terminal__command terminal__command--output">AUTH_USER_MODEL = 'token_auth.User'</li>
               </ul>
             </code>
-                        <button class="copy-btn">Copy</button>
+                            <button class="copy-btn">Copy</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Step 4: Register the User Model in the Admin Panel -->
-    <div class="step">
-        <div class="step-number">4</div>
-        <div class="step-header">Step 4: Register the User Model in the Admin Panel</div>
-        <div class="step-description">
-            <p>Register the User model in the admin.py file of the app.</p>
-            <div class="terminal">
-                <div class="terminal__head">
-                    <div class="terminal__controls">
-                        <div class="terminal__button terminal__button--close"></div>
-                        <div class="terminal__button terminal__button--minimise"></div>
-                        <div class="terminal__button terminal__button--maximise"></div>
+        <!-- Step 4: Register the User Model in the Admin Panel -->
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-header">Step 4: Register the User Model in the Admin Panel</div>
+            <div class="step-description">
+                <p>Register the User model in the admin.py file of the app.</p>
+                <div class="terminal">
+                    <div class="terminal__head">
+                        <div class="terminal__controls">
+                            <div class="terminal__button terminal__button--close"></div>
+                            <div class="terminal__button terminal__button--minimise"></div>
+                            <div class="terminal__button terminal__button--maximise"></div>
+                        </div>
+                        <div class="terminal__title">
+                            <h1 class="terminal__title-text">token_auth/admin.py</h1>
+                        </div>
                     </div>
-                    <div class="terminal__title">
-                        <h1 class="terminal__title-text">token_auth/admin.py</h1>
-                    </div>
-                </div>
-                <div class="terminal__body">
-                    <div class="terminal__code">
-                        <code class="terminal__code-language">
+                    <div class="terminal__body">
+                        <div class="terminal__code">
+                            <code class="terminal__code-language">
               <ul class="terminal__commands-list">
                 <li class="terminal__command terminal__command--output">from .models import User</li>
                 <li class="terminal__command terminal__command--output"># Register your models here.</li>
                 <li class="terminal__command terminal__command--output">admin.site.register(User)</li>
               </ul>
             </code>
-                        <button class="copy-btn">Copy</button>
+                            <button class="copy-btn">Copy</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Step 5: Configure Book model -->
-    <div class="step">
-        <div class="step-number">5</div>
-        <div class="step-header">Step 5: Configure Book Model</div>
-        <div class="step-description">
-            <p>In the Book model add a forign key owner</p>
-            <div class="terminal">
-                <div class="terminal__head">
-                    <div class="terminal__controls">
-                        <div class="terminal__button terminal__button--close"></div>
-                        <div class="terminal__button terminal__button--minimise"></div>
-                        <div class="terminal__button terminal__button--maximise"></div>
+        <!-- Step 5: Configure Book model -->
+        <div class="step">
+            <div class="step-number">5</div>
+            <div class="step-header">Step 5: Configure Book Model</div>
+            <div class="step-description">
+                <p>In the Book model add a forign key owner</p>
+                <div class="terminal">
+                    <div class="terminal__head">
+                        <div class="terminal__controls">
+                            <div class="terminal__button terminal__button--close"></div>
+                            <div class="terminal__button terminal__button--minimise"></div>
+                            <div class="terminal__button terminal__button--maximise"></div>
+                        </div>
+                        <div class="terminal__title">
+                            <h1 class="terminal__title-text">my_app/models.py</h1>
+                        </div>
                     </div>
-                    <div class="terminal__title">
-                        <h1 class="terminal__title-text">my_app/models.py</h1>
-                    </div>
-                </div>
-                <div class="terminal__body">
-                    <div class="terminal__code">
-                        <code class="terminal__code-language">
+                    <div class="terminal__body">
+                        <div class="terminal__code">
+                            <code class="terminal__code-language">
               <ul class="terminal__commands-list">
                 <li class="terminal__command terminal__command--output">from token_auth.models import User</li>
                 <li class="terminal__command terminal__command--output terminal__comments"># the below goes inside class Book</li>
                 <li class="terminal__command terminal__command--output">owner = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)</li>
               </ul>
             </code>
-                        <button class="copy-btn">Copy</button>
+                            <button class="copy-btn">Copy</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Step 6: Make Migrations and Apply Changes to the Database -->
-    <div class="step">
-        <div class="step-number">6</div>
-        <div class="step-header">Step 6: Make Migrations and Apply Changes to the Database</div>
-        <div class="step-description">
-            <p>Create and apply migrations to sync the database schema with the Django models.</p>
-            <div class="terminal">
-                <div class="terminal__head">
-                    <div class="terminal__controls">
-                        <div class="terminal__button terminal__button--close"></div>
-                        <div class="terminal__button terminal__button--minimise"></div>
-                        <div class="terminal__button terminal__button--maximise"></div>
+        <!-- Step 6: Make Migrations and Apply Changes to the Database -->
+        <div class="step">
+            <div class="step-number">6</div>
+            <div class="step-header">Step 6: Make Migrations and Apply Changes to the Database</div>
+            <div class="step-description">
+                <p>Create and apply migrations to sync the database schema with the Django models.</p>
+                <div class="terminal">
+                    <div class="terminal__head">
+                        <div class="terminal__controls">
+                            <div class="terminal__button terminal__button--close"></div>
+                            <div class="terminal__button terminal__button--minimise"></div>
+                            <div class="terminal__button terminal__button--maximise"></div>
+                        </div>
+                        <div class="terminal__title">
+                            <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                        </div>
                     </div>
-                    <div class="terminal__title">
-                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
-                    </div>
-                </div>
-                <div class="terminal__body">
-                    <div class="terminal__code">
-                        <code class="terminal__code-language">
+                    <div class="terminal__body">
+                        <div class="terminal__code">
+                            <code class="terminal__code-language">
                   <ul class="terminal__commands-list">
                     <li class="terminal__command terminal__command--input">python manage.py makemigrations</li>
                     <li class="terminal__command terminal__command--input">python manage.py migrate</li>
@@ -437,24 +499,24 @@
                     <li class="terminal__command terminal__command--input">python manage.py runserver</li>
                   </ul>
                 </code>
-                        <button class="copy-btn">Copy</button>
+                            <button class="copy-btn">Copy</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="terminal">
-                <div class="terminal__head">
-                    <div class="terminal__controls">
-                        <div class="terminal__button terminal__button--close"></div>
-                        <div class="terminal__button terminal__button--minimise"></div>
-                        <div class="terminal__button terminal__button--maximise"></div>
+                <div class="terminal">
+                    <div class="terminal__head">
+                        <div class="terminal__controls">
+                            <div class="terminal__button terminal__button--close"></div>
+                            <div class="terminal__button terminal__button--minimise"></div>
+                            <div class="terminal__button terminal__button--maximise"></div>
+                        </div>
+                        <div class="terminal__title">
+                            <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                        </div>
                     </div>
-                    <div class="terminal__title">
-                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
-                    </div>
-                </div>
-                <div class="terminal__body">
-                    <div class="terminal__code">
-                        <code class="terminal__code-language">
+                    <div class="terminal__body">
+                        <div class="terminal__code">
+                            <code class="terminal__code-language">
                   <ul class="terminal__commands-list">
                     <li class="terminal__command terminal__command--input">python3 manage.py makemigrations</li>
                     <li class="terminal__command terminal__command--input">python3 manage.py migrate</li>
@@ -462,34 +524,34 @@
                     <li class="terminal__command terminal__command--input">python3 manage.py runserver</li>
                   </ul>
                 </code>
-                        <button class="copy-btn">Copy</button>
+                            <button class="copy-btn">Copy</button>
+                        </div>
                     </div>
                 </div>
+
             </div>
-
         </div>
-    </div>
 
-    <!-- Step 7: Create API View -->
-    <div class="step">
-        <div class="step-number">7</div>
-        <div class="step-header">Step 7: Add CreateAPIView in my_app/views.py</div>
-        <div class="step-description">
-            <p>In your my_app/view.py file add CreateAPIView</p>
-            <div class="terminal">
-                <div class="terminal__head">
-                    <div class="terminal__controls">
-                        <div class="terminal__button terminal__button--close"></div>
-                        <div class="terminal__button terminal__button--minimise"></div>
-                        <div class="terminal__button terminal__button--maximise"></div>
+        <!-- Step 7: Create API View -->
+        <div class="step">
+            <div class="step-number">7</div>
+            <div class="step-header">Step 7: Add CreateAPIView in my_app/views.py</div>
+            <div class="step-description">
+                <p>In your my_app/view.py file add CreateAPIView</p>
+                <div class="terminal">
+                    <div class="terminal__head">
+                        <div class="terminal__controls">
+                            <div class="terminal__button terminal__button--close"></div>
+                            <div class="terminal__button terminal__button--minimise"></div>
+                            <div class="terminal__button terminal__button--maximise"></div>
+                        </div>
+                        <div class="terminal__title">
+                            <h1 class="terminal__title-text">my_app/views.py</h1>
+                        </div>
                     </div>
-                    <div class="terminal__title">
-                        <h1 class="terminal__title-text">my_app/views.py</h1>
-                    </div>
-                </div>
-                <div class="terminal__body">
-                    <div class="terminal__code">
-                        <code class="terminal__code-language">
+                    <div class="terminal__body">
+                        <div class="terminal__code">
+                            <code class="terminal__code-language">
               <ul class="terminal__commands-list">
                 <li class="terminal__command terminal__command--output terminal__comments"># Import</li>
                 <li class="terminal__command terminal__command--output">from rest_framework.generics import CreateAPIView, ListAPIView</li>
@@ -497,25 +559,25 @@
                 <li class="terminal__command terminal__command--output">from rest_framework.response import Response</li>
               </ul>
             </code>
-                        <button class="copy-btn">Copy</button>
+                            <button class="copy-btn">Copy</button>
 
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="terminal">
-                <div class="terminal__head">
-                    <div class="terminal__controls">
-                        <div class="terminal__button terminal__button--close"></div>
-                        <div class="terminal__button terminal__button--minimise"></div>
-                        <div class="terminal__button terminal__button--maximise"></div>
+                <div class="terminal">
+                    <div class="terminal__head">
+                        <div class="terminal__controls">
+                            <div class="terminal__button terminal__button--close"></div>
+                            <div class="terminal__button terminal__button--minimise"></div>
+                            <div class="terminal__button terminal__button--maximise"></div>
+                        </div>
+                        <div class="terminal__title">
+                            <h1 class="terminal__title-text">my_app/views.py</h1>
+                        </div>
                     </div>
-                    <div class="terminal__title">
-                        <h1 class="terminal__title-text">my_app/views.py</h1>
-                    </div>
-                </div>
-                <div class="terminal__body">
-                    <div class="terminal__code">
-                        <code class="terminal__code-language">
+                    <div class="terminal__body">
+                        <div class="terminal__code">
+                            <code class="terminal__code-language">
               <ul class="terminal__commands-list">
                 <li class="terminal__command terminal__command--output">class BookCreateView(CreateAPIView):</li>
                 <li class="terminal__command terminal__command--output">&nbsp;&nbsp;&nbsp;&nbsp;permission_classes = [IsAuthenticated]</li>
@@ -540,88 +602,88 @@
                 <li class="terminal__command terminal__command--output">&nbsp;&nbsp;&nbsp;&nbsp;serializer_class = BookSerializer</li>
               </ul>
             </code>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Step 8: Create urls.py File -->
-    <div class="step">
-        <div class="step-number">8</div>
-        <div class="step-header">Step 8: Update my_app/urls.py</div>
-        <div class="step-description">
-            <p>In my_app/urls.py file </p>
-            <div class="terminal">
-                <div class="terminal__head">
-                    <div class="terminal__controls">
-                        <div class="terminal__button terminal__button--close"></div>
-                        <div class="terminal__button terminal__button--minimise"></div>
-                        <div class="terminal__button terminal__button--maximise"></div>
+        <!-- Step 8: Create urls.py File -->
+        <div class="step">
+            <div class="step-number">8</div>
+            <div class="step-header">Step 8: Update my_app/urls.py</div>
+            <div class="step-description">
+                <p>In my_app/urls.py file </p>
+                <div class="terminal">
+                    <div class="terminal__head">
+                        <div class="terminal__controls">
+                            <div class="terminal__button terminal__button--close"></div>
+                            <div class="terminal__button terminal__button--minimise"></div>
+                            <div class="terminal__button terminal__button--maximise"></div>
+                        </div>
+                        <div class="terminal__title">
+                            <h1 class="terminal__title-text">my_app/urls.py</h1>
+                        </div>
                     </div>
-                    <div class="terminal__title">
-                        <h1 class="terminal__title-text">my_app/urls.py</h1>
-                    </div>
-                </div>
-                <div class="terminal__body">
-                    <div class="terminal__code">
-                        <code class="terminal__code-language">
+                    <div class="terminal__body">
+                        <div class="terminal__code">
+                            <code class="terminal__code-language">
                         <ul class="terminal__commands-list">
                             <li class="terminal__command terminal__command--output">from .views import BookCreateView, BookListView</li>
                         </ul>
                     </code>
-                        <button class="copy-btn">Copy</button>
+                            <button class="copy-btn">Copy</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <p>The below goes inside urlpatterns:</p>
-            <div class="terminal">
-                <div class="terminal__head">
-                    <div class="terminal__controls">
-                        <div class="terminal__button terminal__button--close"></div>
-                        <div class="terminal__button terminal__button--minimise"></div>
-                        <div class="terminal__button terminal__button--maximise"></div>
+                <p>The below goes inside urlpatterns:</p>
+                <div class="terminal">
+                    <div class="terminal__head">
+                        <div class="terminal__controls">
+                            <div class="terminal__button terminal__button--close"></div>
+                            <div class="terminal__button terminal__button--minimise"></div>
+                            <div class="terminal__button terminal__button--maximise"></div>
+                        </div>
+                        <div class="terminal__title">
+                            <h1 class="terminal__title-text">my_app/urls.py</h1>
+                        </div>
                     </div>
-                    <div class="terminal__title">
-                        <h1 class="terminal__title-text">my_app/urls.py</h1>
-                    </div>
-                </div>
-                <div class="terminal__body">
-                    <div class="terminal__code">
-                        <code class="terminal__code-language">
+                    <div class="terminal__body">
+                        <div class="terminal__code">
+                            <code class="terminal__code-language">
                         <ul class="terminal__commands-list">
                             <li class="terminal__command terminal__command--output">path('api/books/create/', BookCreateView.as_view()),</li>
                             <li class="terminal__command terminal__command--output">path('api/books/list/', BookListView.as_view()),</li>
                         </ul>
                     </code>
-                        <button class="copy-btn">Copy</button>
+                            <button class="copy-btn">Copy</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Step 9: Test APIs in Postman -->
-    <div class="step">
-        <div class="step-number">9</div>
-        <div class="step-header">Step 9: Test APIs in Postman</div>
-        <div class="step-description">
-            <p>In Postman, test the urls for create and list</p>
-            <br>
-            <li>api/books/create/</li>
-            </ul>
-            <div class="terminal">
-                <div class="terminal__head">
-                    <div class="terminal__controls">
-                        <div class="terminal__button terminal__button--close"></div>
-                        <div class="terminal__button terminal__button--minimise"></div>
-                        <div class="terminal__button terminal__button--maximise"></div>
+        <!-- Step 9: Test APIs in Postman -->
+        <div class="step">
+            <div class="step-number">9</div>
+            <div class="step-header">Step 9: Test APIs in Postman</div>
+            <div class="step-description">
+                <p>In Postman, test the urls for create and list</p>
+                <br>
+                <li>api/books/create/</li>
+                </ul>
+                <div class="terminal">
+                    <div class="terminal__head">
+                        <div class="terminal__controls">
+                            <div class="terminal__button terminal__button--close"></div>
+                            <div class="terminal__button terminal__button--minimise"></div>
+                            <div class="terminal__button terminal__button--maximise"></div>
+                        </div>
+                        <div class="terminal__title">
+                            <h1 class="terminal__title-text">JSON</h1>
+                        </div>
                     </div>
-                    <div class="terminal__title">
-                        <h1 class="terminal__title-text">JSON</h1>
-                    </div>
-                </div>
-                <div class="terminal__body">
-                    <div class="terminal__code">
-                        <code class="terminal__code-language">
+                    <div class="terminal__body">
+                        <div class="terminal__code">
+                            <code class="terminal__code-language">
               <ul class="terminal__commands-list">
                 <li class="terminal__command terminal__command--output">{</li>
                 <li class="terminal__command terminal__command--output">    "title": "The Crown in the Sea",</li>
@@ -635,14 +697,19 @@
                 <li class="terminal__command terminal__command--output">}</li>
               </ul>
             </code>
-                        <button class="copy-btn">Copy</button>
+                            <button class="copy-btn">Copy</button>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
         </div>
+    </main>
 
-    </div>
+    <footer>
+        <p>&copy; 2023 Ali Naser</p>
+    </footer>
     <script>
         // Copy code snippet to clipboard
         const copyBtns = document.querySelectorAll('.copy-btn');
