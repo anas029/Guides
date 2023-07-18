@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono" rel="stylesheet">
+    <title>Django Rest Framework</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ::selection {
+            background-color: #969696;
+            color: #111;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            display: grid;
+            place-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .title-heading {
+            margin: 50px auto;
+        }
+
+        /* Step number styles */
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #333;
+            color: #FFF;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Terminal Styles */
+        .terminal {
+            display: block;
+            width: 600px;
+            border-radius: 5px;
+            box-shadow: 0px 10px 45px rgba(0, 0, 0, 0.3);
+            background-color: #272822;
+            color: #f8f8f2;
+            margin: 20px auto;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .terminal__head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            background-color: #e2e2e2;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .terminal__controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        .terminal__title {
+            flex-grow: 1;
+        }
+
+        .terminal__title-text {
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .terminal__body {
+            padding: 0 10px;
+        }
+
+        .terminal__code {
+            background-color: #272822;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.4;
+            overflow-x: auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .terminal__command--input::before {
+            content: "$ ";
+            color: #7fdbca;
+        }
+
+        .terminal__command--output::before {
+            content: "$ ";
+            color: #ff6d00;
+        }
+
+        .terminal__command--input:last-child::after {
+            content: "\25A0";
+            font-size: 14px;
+            vertical-align: middle;
+            animation: 1.2s fade infinite;
+        }
+
+        .terminal__head .terminal__button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .terminal__button--close {
+            margin-left: 10px;
+            background-color: #ff6059;
+        }
+
+        .terminal__button--minimise {
+            background-color: #ffbd2e;
+        }
+
+        .terminal__button--maximise {
+            background-color: #29ca42;
+        }
+
+        .terminal__code-language {
+            display: block;
+            color: #fff;
+            line-height: 2rem;
+            text-align: left;
+        }
+
+        .terminal__commands-list {
+            list-style: none;
+        }
+
+        .terminal__commands-list .terminal__command--input:last-child::after {
+            content: "\25A0";
+            /* Unicode code point for a block symbol */
+            font-size: 14px;
+            vertical-align: middle;
+            animation: 1.2s fade infinite;
+        }
+
+        .terminal__title .terminal__title-text {
+            text-align: center;
+            font-size: 14px;
+            color: #111;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Guide Steps Styles */
+        .step {
+            margin-bottom: 50px;
+        }
+
+        .step-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .step-description {
+            font-size: 16px;
+            width: 600px;
+        }
+
+        /* Guide Copy button Styles */
+        .copy-btn {
+            cursor: pointer;
+            background-color: #333;
+            border: none;
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 14px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1 class="title-heading">Step-by-Step Guide: Django Authentication</h1>
+    </div>
+    <!-- Step 1: Install dj-rest-auth, django-allauth -->
+    <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-header">Step 1: Install dj-rest-auth, django-allauth</div>
+        <div class="step-description">
+            <p>Install the required Python packages for your django authentication.</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">pip install dj-rest-auth django-allauth</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">pip3 install dj-rest-auth django-allauth</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Step 2: Start a New Django App -->
+    <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-header">Step 2: Start a New Django App</div>
+        <div class="step-description">
+            <p>In the terminal</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-windows'> </i> Windows</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">python manage.py startapp token_auth</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text"><i class='bx bxl-apple'> </i> Mac</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--input">python3 manage.py startapp token_auth</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 3: Add to settings.py -->
+    <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-header">Step 3: Configure settings.py</div>
+        <div class="step-description">
+            <p>Add to INSTALLED_APPS</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text">settings.py</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--output">'rest_framework.authtoken',</li>
+                <li class="terminal__command terminal__command--output">'allauth',</li>
+                <li class="terminal__command terminal__command--output">'allauth.account',</li>
+                <li class="terminal__command terminal__command--output">'dj_rest_auth',</li>
+                <li class="terminal__command terminal__command--output">'dj_rest_auth.registration',</li>
+                <li class="terminal__command terminal__command--output">'token_auth',</li>
+              </ul>            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <p>Add at the end of the file</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text">settings.py</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--output">REST_FRAMEWORK = {</li>
+                <li class="terminal__command terminal__command--output">    "DEFAULT_AUTHENTICATION_CLASSES": [</li>
+                <li class="terminal__command terminal__command--output">        "rest_framework.authentication.TokenAuthentication",</li>
+                <li class="terminal__command terminal__command--output">    ]</li>
+                <li class="terminal__command terminal__command--output">}</li>
+                <li class="terminal__command terminal__command--output">SITE_ID = 1</li>
+              </ul>            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-header">Step 4: Create urls file in token_auth</div>
+        <div class="step-description">
+            <p>Inside token_app folder create a file named "urls" and add the below commands:</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text">token_auth/urls.py</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--output">from django.urls import path</li>
+                <li class="terminal__command terminal__command--output">from dj_rest_auth.registration.views import RegisterView</li>
+                <li class="terminal__command terminal__command--output">from dj_rest_auth.views import LoginView, LogoutView</li>
+                <li class="terminal__command terminal__command--output"></li>
+                <li class="terminal__command terminal__command--output">urlpatterns = [</li>
+                <li class="terminal__command terminal__command--output">    path('register/', RegisterView.as_view(), name="rest_register"),</li>
+                <li class="terminal__command terminal__command--output">    path('login/', LoginView.as_view(), name='rest_login'),</li>
+                <li class="terminal__command terminal__command--output">    path('logout/', LogoutView.as_view(), name='rest_logout'),</li>
+                <li class="terminal__command terminal__command--output">]</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-header">Step 5: Include token_app/urls in project/urls</div>
+        <div class="step-description">
+            <p>Open my_project/urls.py and add the command inside urlpatterns</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text">my_project/urls.py</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--output">path('auth/', include('token_auth.urls')),</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 6: Run the Django Development Server -->
+    <div class="step">
+        <div class="step-number">6</div>
+        <div class="step-header">Step 6: Add Authentication to Views</div>
+        <div class="step-description">
+            <p>Open my_app/views.py and add this command inside class views where applicable</p>
+            <p>An example for Retrieve view:</p>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text">my_app/views.py</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--output">from rest_framework.permissions import IsAuthenticated</li>
+                <li class="terminal__command terminal__command--output">class BookListRetrieve(RetrieveAPIView):</li>
+                <li class="terminal__command terminal__command--output">&nbsp;&nbsp;&nbsp;&nbsp;permission_classes = [IsAuthenticated]</li>
+                <li class="terminal__command terminal__command--output">&nbsp;&nbsp;&nbsp;&nbsp;queryset = Book.objects.all()</li>
+                <li class="terminal__command terminal__command--output">&nbsp;&nbsp;&nbsp;&nbsp;serializer_class = BookSerializer</li>
+              </ul>
+            </code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 7: Test APIs in Postman -->
+    <div class="step">
+        <div class="step-number">7</div>
+        <div class="step-header">Step 7: Test APIs in Postman</div>
+        <div class="step-description">
+            <p>In Postman, test the urls for register, login, book retrieve, logout</p>
+            <br>
+            <ul>
+                <li>register</li>
+            </ul>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text">JSON</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--output">{</li>
+                <li class="terminal__command terminal__command--output">    "username": "user1",</li>
+                <li class="terminal__command terminal__command--output">    "password1": "supersecurepassword123",</li>
+                <li class="terminal__command terminal__command--output">    "password2": "supersecurepassword123"</li>
+                <li class="terminal__command terminal__command--output">}</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <ul>
+                <li>login</li>
+            </ul>
+            <div class="terminal">
+                <div class="terminal__head">
+                    <div class="terminal__controls">
+                        <div class="terminal__button terminal__button--close"></div>
+                        <div class="terminal__button terminal__button--minimise"></div>
+                        <div class="terminal__button terminal__button--maximise"></div>
+                    </div>
+                    <div class="terminal__title">
+                        <h1 class="terminal__title-text">JSON</h1>
+                    </div>
+                </div>
+                <div class="terminal__body">
+                    <div class="terminal__code">
+                        <code class="terminal__code-language">
+              <ul class="terminal__commands-list">
+                <li class="terminal__command terminal__command--output">{</li>
+                <li class="terminal__command terminal__command--output">    "username": "user1",</li>
+                <li class="terminal__command terminal__command--output">    "password": "supersecurepassword123"</li>
+                <li class="terminal__command terminal__command--output">}</li>
+              </ul>
+            </code>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                </div>
+            </div>
+            <p>You will get the key (Token) from the server <br /><br />Use the key to authenticate<br /><br />In the
+                headers>><br />
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;Key:Authorization
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;Value:Token dd22c00f6986f2494bc054dfcf300191534b8a11
+            </p>
+        </div>
+
+    </div>
+    <script>
+        // Copy code snippet to clipboard
+        const copyBtns = document.querySelectorAll('.copy-btn');
+        copyBtns.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const codeSnippet = btn.parentNode.querySelector('code');
+                navigator.clipboard.writeText(codeSnippet.innerText)
+                    .then(() => {
+                        btn.innerText = 'Copied!';
+                        setTimeout(() => {
+                            btn.innerText = 'Copy';
+                        }, 2000);
+                    })
+                    .catch((error) => {
+                        console.error('Failed to copy:', error);
+                    });
+            });
+        });
+    </script>
+</body>
+
+</html>
